@@ -27,8 +27,8 @@ public class AlumnoService {
         return alumno;
     }
 
-    public Alumno editarAlumno(Alumno alumno, String matricula) {
-        Alumno foundAlumno = buscarAlumno(matricula);
+    public Alumno editarAlumno(Alumno alumno, Integer id) {
+        Alumno foundAlumno = buscarAlumno(id);
         int indice = alumnos.indexOf(foundAlumno);
         foundAlumno.setId(alumno.getId());
         foundAlumno.setNombres(alumno.getNombres());
@@ -39,16 +39,16 @@ public class AlumnoService {
         return foundAlumno;
     }
     
-    public Alumno eliminarAlumno(String matricula) {
-        Alumno foundAlumno = buscarAlumno(matricula);
+    public Alumno eliminarAlumno(Integer id) {
+        Alumno foundAlumno = buscarAlumno(id);
         alumnos.remove(foundAlumno);
         return foundAlumno;
     }
 
-    public Alumno buscarAlumno(String matricula) {
+    public Alumno buscarAlumno(Integer id) {
         
         Optional<Alumno> alumnoOptional = alumnos.stream()
-                .filter(alumno -> alumno.getMatricula().equals(matricula))
+                .filter(alumno -> alumno.getId().equals(id))
                 .findFirst();
 
         if (!alumnoOptional.isPresent()) {

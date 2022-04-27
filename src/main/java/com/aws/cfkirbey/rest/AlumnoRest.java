@@ -2,7 +2,6 @@ package com.aws.cfkirbey.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-//import java.util.LinkedList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,14 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aws.cfkirbey.model.Alumno;
 import com.aws.cfkirbey.service.AlumnoService;
 
 @RestController // Metaprogramacion
-@RequestMapping("/api")
 public class AlumnoRest {
 
     @Autowired
@@ -33,9 +30,9 @@ public class AlumnoRest {
         return ResponseEntity.ok().body(alumnoService.getAlumnos());
     }
 
-    @GetMapping("/alumnos/{matricula}")
-    public ResponseEntity<Alumno> obtenerAlumno(@PathVariable String matricula) {
-        return ResponseEntity.ok(alumnoService.buscarAlumno(matricula));
+    @GetMapping("/alumnos/{id}")
+    public ResponseEntity<Alumno> obtenerAlumno(@PathVariable Integer id) {
+        return ResponseEntity.ok(alumnoService.buscarAlumno(id));
     }
 
     @PostMapping("/alumnos")
@@ -47,16 +44,16 @@ public class AlumnoRest {
             .body(alumnoCreado);
     }
 
-    @PutMapping("/alumnos/{matricula}")
-    public ResponseEntity<Alumno> editarAlumno(@PathVariable String matricula, @Valid @RequestBody Alumno alumno) {
-        Alumno alumnoEditado = alumnoService.editarAlumno(alumno, matricula);
+    @PutMapping("/alumnos/{id}")
+    public ResponseEntity<Alumno> editarAlumno(@PathVariable Integer id, @Valid @RequestBody Alumno alumno) {
+        Alumno alumnoEditado = alumnoService.editarAlumno(alumno, id);
         return ResponseEntity.status(200).body(alumnoEditado);
     }
 
-    @DeleteMapping("/alumnos/{matricula}")
-    public ResponseEntity<Void> eliminarAlumno(@PathVariable String matricula) {
-        alumnoService.eliminarAlumno(matricula);
-        return ResponseEntity.status(204).build();
+    @DeleteMapping("/alumnos/{id}")
+    public ResponseEntity<Void> eliminarAlumno(@PathVariable Integer id) {
+        alumnoService.eliminarAlumno(id);
+        return ResponseEntity.status(200).build();
     }
 
 

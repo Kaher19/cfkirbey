@@ -1,71 +1,83 @@
 package com.aws.cfkirbey.model;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 
 public class Profesor {
+    @Min(value = 1, message = "El id debe ser numérico y mayor a 1")
+    private Integer id;
     
-    // POJO: Plain Java Object
-    // Validar aqui (opcional)
-    
-    @NotEmpty(message = "La matricula no puede ser vacía")
-    private String matricula; // NO vacia - null or ""
+    @NotEmpty(message = "El numero de empleado debe contener un valor no vacío.")
+    @Length(min=5, message = "El numero de empleado debe contener mas de 5 caracteres")
+    private String numeroEmpleado;
     
     @NotEmpty
-    private String nombre; // No vacio - null or ""
+    @Length(min=2, max=255, message = "El nombre debe contener de 2 a 255 caracteres")
+    private String nombres;
 
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
-    private String correo;
+    @Length(min=2, max=255, message = "El apellido debe contener de 2 a 255 caracteres")
+    private String apellidos;
+    
+    @DecimalMax("50.0")
+    @DecimalMin("0.0")
+    private Integer horasClase;
 
-    public Profesor() {
+    public Profesor() {}
+
+    public Profesor(Integer id, String numeroEmpleado, String nombres, String apellidos, Integer horasClase) {
+        this.id = id;
+        this.numeroEmpleado = numeroEmpleado;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.horasClase = horasClase;
+    }
+    public Integer getId() {
+        return this.id;
     }
 
-    public Profesor(String matricula, String nombre) {
-        this.matricula = matricula;
-        this.nombre = nombre;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getMatricula() {
-        return this.matricula;
+    public String getNumeroEmpleado() {
+        return this.numeroEmpleado;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setNumeroEmpleado(String numeroEmpleado) {
+        this.numeroEmpleado = numeroEmpleado;
     }
 
-    public String getNombre() {
-        return this.nombre;
+    public String getNombres() {
+        return this.nombres;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public Profesor matricula(String matricula) {
-        setMatricula(matricula);
-        return this;
+    public String getApellidos() {
+        return this.apellidos;
     }
 
-    public Profesor nombre(String nombre) {
-        setNombre(nombre);
-        return this;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+    public Integer getHorasClase() {
+        return horasClase;
     }
 
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setHorasClase(Integer horasClase) {
+        this.horasClase = horasClase;
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " matricula='" + getMatricula() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            "}";
+        return "";
     }
 
 }

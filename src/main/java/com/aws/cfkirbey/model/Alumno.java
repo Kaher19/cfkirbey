@@ -3,7 +3,6 @@ package com.aws.cfkirbey.model;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
@@ -14,7 +13,7 @@ public class Alumno {
     private Integer id;
     
     @NotEmpty(message = "La matricula debe contener un valor no vacío.")
-    @Length(min=9, max=9, message = "La matricula debe contener 9 caracteres")
+    @Length(min=5, message = "La matricula debe contener mas de 5 caracteres")
     private String matricula;
     
     @NotEmpty
