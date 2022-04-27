@@ -2,7 +2,7 @@ package com.aws.cfkirbey.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
+//import java.util.LinkedList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -47,14 +47,16 @@ public class AlumnoRest {
             .body(alumnoCreado);
     }
 
-    @PutMapping("/alumnos/{matricula}") // PUT /alumnos/1001930
-    public ResponseEntity<Alumno> editarAlumno(@PathVariable String matricula, @RequestBody Alumno alumno) {
-        return ResponseEntity.ok().build();
+    @PutMapping("/alumnos/{matricula}")
+    public ResponseEntity<Alumno> editarAlumno(@PathVariable String matricula, @Valid @RequestBody Alumno alumno) {
+        Alumno alumnoEditado = alumnoService.editarAlumno(alumno, matricula);
+        return ResponseEntity.status(200).body(alumnoEditado);
     }
 
-    @DeleteMapping("/alumnos/{matricula}") // DELETE /alumnos/1001930
+    @DeleteMapping("/alumnos/{matricula}")
     public ResponseEntity<Void> eliminarAlumno(@PathVariable String matricula) {
-        return ResponseEntity.ok().build();
+        alumnoService.eliminarAlumno(matricula);
+        return ResponseEntity.status(204).build();
     }
 
 

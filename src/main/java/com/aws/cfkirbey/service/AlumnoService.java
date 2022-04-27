@@ -15,7 +15,7 @@ public class AlumnoService {
     private List<Alumno> alumnos = new LinkedList<>();
 
     {
-        alumnos.add(new Alumno("13001777", "Kirbey Garcia", "a13001777@alumnos.uady.mx"));
+        alumnos.add(new Alumno(1 ,"13001777", "Kirbey", "Apellidos", 84.5));
     }
     
     public List<Alumno> getAlumnos() {
@@ -27,10 +27,28 @@ public class AlumnoService {
         return alumno;
     }
 
+    public Alumno editarAlumno(Alumno alumno, String matricula) {
+        Alumno foundAlumno = buscarAlumno(matricula);
+        int indice = alumnos.indexOf(foundAlumno);
+        foundAlumno.setId(alumno.getId());
+        foundAlumno.setNombres(alumno.getNombres());
+        foundAlumno.setApellidos(alumno.getApellidos());
+        foundAlumno.setPromedio(alumno.getPromedio());
+        foundAlumno.setMatricula(alumno.getMatricula());
+        alumnos.set(indice, foundAlumno);
+        return foundAlumno;
+    }
+    
+    public Alumno eliminarAlumno(String matricula) {
+        Alumno foundAlumno = buscarAlumno(matricula);
+        alumnos.remove(foundAlumno);
+        return foundAlumno;
+    }
+
     public Alumno buscarAlumno(String matricula) {
         
         Optional<Alumno> alumnoOptional = alumnos.stream()
-                .filter(student -> student.getMatricula().equals(matricula))
+                .filter(alumno -> alumno.getMatricula().equals(matricula))
                 .findFirst();
 
         if (!alumnoOptional.isPresent()) {

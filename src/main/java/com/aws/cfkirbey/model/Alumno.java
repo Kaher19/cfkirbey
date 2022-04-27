@@ -1,34 +1,49 @@
 package com.aws.cfkirbey.model;
 
-import javax.validation.constraints.Digits;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
 public class Alumno {
-    
-    // POJO: Plain Java Object
-    // Validar aqui (opcional)
+
+    @Min(value = 1, message = "El id debe ser numérico y mayor a 1")
+    private Integer id;
     
     @NotEmpty(message = "La matricula debe contener un valor no vacío.")
-    @Length(min=8, max=8, message = "La matricula debe contener 8 caracteres")
+    @Length(min=9, max=9, message = "La matricula debe contener 9 caracteres")
     private String matricula;
     
     @NotEmpty
-    @Length(min=2, max=80, message = "El nombre debe contener de :min a :max caracteres")
-    private String nombre;
+    @Length(min=2, max=255, message = "El nombre debe contener de 2 a 255 caracteres")
+    private String nombres;
 
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
-    @NotEmpty(message = "El nombre debe contener un valor no vacío.")
-    private String correo;
+    @NotEmpty
+    @Length(min=2, max=255, message = "El apellido debe contener de 2 a 255 caracteres")
+    private String apellidos;
+    
+    @DecimalMax("100.0")
+    @DecimalMin("0.0")
+    private Double promedio;
 
     public Alumno() {}
 
-    public Alumno(String matricula, String nombre, String correo) {
+    public Alumno(Integer id, String matricula, String nombres, String apellidos, Double promedio) {
+        this.id = id;
         this.matricula = matricula;
-        this.nombre = nombre;
-        this.correo = correo;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.promedio = promedio;
+    }
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getMatricula() {
@@ -39,20 +54,27 @@ public class Alumno {
         this.matricula = matricula;
     }
 
-    public String getNombre() {
-        return this.nombre;
+    public String getNombres() {
+        return this.nombres;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getApellidos() {
+        return this.apellidos;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+    public Double getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(Double promedio) {
+        this.promedio = promedio;
     }
 
     @Override
