@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aws.cfkirbey.model.Profesor;
 import com.aws.cfkirbey.service.ProfesorService;
 
-@RestController // Metaprogramacion
+@RestController
 public class ProfesorRest {
 
     @Autowired
@@ -32,7 +32,7 @@ public class ProfesorRest {
 
     @GetMapping("/profesores/{id}")
     public ResponseEntity<Profesor> obtenerProfesor(@PathVariable Integer id) {
-        return ResponseEntity.ok(profesorService.buscarProfesor(id));
+        return ResponseEntity.ok(profesorService.buscarProfesor(id).get());
     }
 
     @PostMapping("/profesores")
@@ -46,7 +46,7 @@ public class ProfesorRest {
 
     @PutMapping("/profesores/{id}")
     public ResponseEntity<Profesor> editarProfesor(@PathVariable Integer id, @Valid @RequestBody Profesor profesor) {
-        Profesor profesorEditado = profesorService.editarProfesor(profesor, id);
+        Profesor profesorEditado = profesorService.editarProfesor(id, profesor);
         return ResponseEntity.status(200).body(profesorEditado);
     }
 
@@ -55,6 +55,5 @@ public class ProfesorRest {
         profesorService.eliminarProfesor(id);
         return ResponseEntity.status(200).build();
     }
-
 
 }

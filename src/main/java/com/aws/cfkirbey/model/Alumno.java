@@ -1,15 +1,27 @@
 package com.aws.cfkirbey.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-public class Alumno {
+@Entity
+@Table(name = "alumnos")
+public class Alumno  implements Serializable{
 
-    @Min(value = 1, message = "El id debe ser numérico y mayor a 1")
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
     @NotEmpty(message = "La matricula debe contener un valor no vacío.")
@@ -28,15 +40,20 @@ public class Alumno {
     @DecimalMin("0.0")
     private Double promedio;
 
+    @Column(name = "foto_perfil")
+    private String fotoPerfilUrl;
+
     public Alumno() {}
 
-    public Alumno(Integer id, String matricula, String nombres, String apellidos, Double promedio) {
+    public Alumno(Integer id, String matricula, String nombres, String apellidos, Double promedio, String fotoPerfilUrl) {
         this.id = id;
         this.matricula = matricula;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.promedio = promedio;
+        this.fotoPerfilUrl = fotoPerfilUrl;
     }
+
     public Integer getId() {
         return this.id;
     }
@@ -68,12 +85,21 @@ public class Alumno {
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
+
     public Double getPromedio() {
         return promedio;
     }
 
     public void setPromedio(Double promedio) {
         this.promedio = promedio;
+    }
+
+    public String getFotoPerfilUrl(){
+        return this.fotoPerfilUrl;
+    }
+    
+    public void setFotoPerfilUrl(String fotoPerfilUrl){
+        this.fotoPerfilUrl = fotoPerfilUrl;
     }
 
     @Override

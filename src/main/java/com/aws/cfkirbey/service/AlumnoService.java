@@ -1,60 +1,65 @@
 package com.aws.cfkirbey.service;
 
+import java.io.IOException;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aws.cfkirbey.exception.NotFoundException;
 import com.aws.cfkirbey.model.Alumno;
+import com.aws.cfkirbey.repository.AlumnoRepository;
 
 @Service
 public class AlumnoService {
 
-    private List<Alumno> alumnos = new LinkedList<>();
+    @Autowired
+    private AlumnoRepository alumnoRepository;
 
-    {
-        alumnos.add(new Alumno(1 ,"13001777", "Kirbey", "Apellidos", 84.5));
-    }
-    
     public List<Alumno> getAlumnos() {
-        return alumnos;
+        List<Alumno> alumnoes = new LinkedList<>();
+        alumnoRepository.findAll().iterator().forEachRemaining(alumnoes::add);
+        return alumnoes;
     }
 
     public Alumno crearAlumno(Alumno alumno) {
-        alumnos.add(alumno);
+        alumno = alumnoRepository.save(alumno);
         return alumno;
     }
 
-    public Alumno editarAlumno(Alumno alumno, Integer id) {
-        Alumno foundAlumno = buscarAlumno(id);
-        int indice = alumnos.indexOf(foundAlumno);
-        foundAlumno.setId(alumno.getId());
-        foundAlumno.setNombres(alumno.getNombres());
-        foundAlumno.setApellidos(alumno.getApellidos());
-        foundAlumno.setPromedio(alumno.getPromedio());
-        foundAlumno.setMatricula(alumno.getMatricula());
-        alumnos.set(indice, foundAlumno);
-        return foundAlumno;
+    public Alumno editarAlumno(Integer id, Alumno requestedAlumno) {
+        Optional<Alumno> foundAlumno = buscarAlumno(id);
+        Alumno alumno = foundAlumno.get(); 
+        alumno.setNombres(requestedAlumno.getNombres());
+        alumno.setApellidos(requestedAlumno.getApellidos());
+        alumno.setPromedio(requestedAlumno.getPromedio());
+        alumno.setMatricula(requestedAlumno.getMatricula());
+        alumnoRepository.save(alumno);
+        return alumno;
     }
     
     public Alumno eliminarAlumno(Integer id) {
-        Alumno foundAlumno = buscarAlumno(id);
-        alumnos.remove(foundAlumno);
-        return foundAlumno;
+        Optional<Alumno> foundAlumno = buscarAlumno(id);
+        Alumno alumno = foundAlumno.get();
+        alumnoRepository.delete(alumno);
+        return alumno;
     }
 
-    public Alumno buscarAlumno(Integer id) {
-        
-        Optional<Alumno> alumnoOptional = alumnos.stream()
-                .filter(alumno -> alumno.getId().equals(id))
-                .findFirst();
+    public Optional<Alumno> buscarAlumno(Integer id) {
+        if (!alumnoRepository.findById(id).isPresent())
+            throw new NotFoundException("El alumno con id " +id+" no existe!");
+        return alumnoRepository.findById(id);
+    }
 
-        if (!alumnoOptional.isPresent()) {
-            throw new NotFoundException();
-        }
-
-        return alumnoOptional.get();
+    public Alumno fotoPerfil(Integer id, MultipartFile fotoPerfil) throws IOException {
+        Optional<Alumno> foundAlumno = this.buscarAlumno(id);
+        Alumno alumno = foundAlumno.get();
+        String publicS3Link = "https://s3.amazonaws.com";
+        alumno.setFotoPerfilUrl(publicS3Link+"/storage/profilePictures/alumnos/"+alumno.getId()+"/"+Instant.now()+fotoPerfil.getOriginalFilename());
+        return alumnoRepository.save(alumno);
     }
 }

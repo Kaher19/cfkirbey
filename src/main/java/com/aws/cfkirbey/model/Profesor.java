@@ -1,18 +1,31 @@
 package com.aws.cfkirbey.model;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-public class Profesor {
+@Entity
+@Table(name = "profesores")
+public class Profesor implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
+    
     @Min(value = 1, message = "El id debe ser numérico y mayor a 1")
+    @Id
+    @GeneratedValue
     private Integer id;
     
     @NotEmpty(message = "El numero de empleado debe contener un valor no vacío.")
     @Length(min=5, message = "El numero de empleado debe contener mas de 5 caracteres")
+    @Column(name = "numero_empleado")
     private String numeroEmpleado;
     
     @NotEmpty
@@ -23,8 +36,7 @@ public class Profesor {
     @Length(min=2, max=255, message = "El apellido debe contener de 2 a 255 caracteres")
     private String apellidos;
     
-    @DecimalMax("50.0")
-    @DecimalMin("0.0")
+    @Column(name = "horas_clase")
     private Integer horasClase;
 
     public Profesor() {}
@@ -36,6 +48,7 @@ public class Profesor {
         this.apellidos = apellidos;
         this.horasClase = horasClase;
     }
+
     public Integer getId() {
         return this.id;
     }
@@ -67,6 +80,7 @@ public class Profesor {
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
+    
     public Integer getHorasClase() {
         return horasClase;
     }
