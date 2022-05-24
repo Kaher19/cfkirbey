@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class FileStorage {
+public class S3FileStorage {
     @Value("${aws.accesKeyId}")
     private String accesKeyId;
 
@@ -29,7 +29,7 @@ public class FileStorage {
     @Value("${aws.bucket}")
     private String bucket;
     
-    public FileStorage(){}
+    public S3FileStorage(){}
 
     public String uploadFileToBucket(String ruta, MultipartFile archivo)  throws IOException{
         System.out.println(bucket+"::"+accesKeyId+"::"+secretAccessKey+"::"+sessionToken);
