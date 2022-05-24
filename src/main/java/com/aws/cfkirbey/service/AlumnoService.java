@@ -13,12 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aws.cfkirbey.exception.NotFoundException;
 import com.aws.cfkirbey.model.Alumno;
 import com.aws.cfkirbey.repository.AlumnoRepository;
+import com.aws.cfkirbey.utils.S3FileStorage;
 
 @Service
 public class AlumnoService {
 
     @Autowired
     private AlumnoRepository alumnoRepository;
+
+    @Autowired
+    private S3FileStorage fStorage;
 
     public List<Alumno> getAlumnos() {
         List<Alumno> alumnoes = new LinkedList<>();
@@ -58,8 +62,8 @@ public class AlumnoService {
     public Alumno fotoPerfil(Integer id, MultipartFile fotoPerfil) throws IOException {
         Optional<Alumno> foundAlumno = this.buscarAlumno(id);
         Alumno alumno = foundAlumno.get();
-        String publicS3Link = "https://s3.amazonaws.com";
-        alumno.setFotoPerfilUrl(publicS3Link+"/storage/profilePictures/alumnos/"+alumno.getId()+"/"+Instant.now()+fotoPerfil.getOriginalFilename());
+        String ruta = "storage/profile_pictures/alumnos/"+alumno.getMatricula()+"/"+Instant.now()+"_"+fotoPerfil.getOriginalFilename();
+        alumno.setFotoPerfilUrl(fStorage.uploadFileToBucket(ruta, fotoPerfil));
         return alumnoRepository.save(alumno);
     }
 }

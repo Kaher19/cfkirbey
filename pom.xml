@@ -27,6 +27,13 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- dependencia de sdk AWS -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.931</version>
+    	</dependency>
+
 		<!-- dependencia de base de datos -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
